@@ -19,10 +19,51 @@ class App extends Component {
     this.props.fetchSmurfs;
   }
 
+  changeHandler = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  submitHandler = e => {
+    e.preventDefault();
+  };
+
   render() {
     return (
       <div className="App">
-        <form />
+        <form>
+          <label>
+            Name:{' '}
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={this.state.name}
+              onChange={this.changeHandler}
+            />
+          </label>
+          <label>
+            Age:{' '}
+            <input
+              type="number"
+              name="age"
+              placeholder="Age"
+              value={this.state.age}
+              onChange={this.changeHandler}
+            />
+          </label>
+          <label>
+            Height:{' '}
+            <input
+              type="text"
+              name="height"
+              placeholder="Height"
+              value={this.state.height}
+              onChange={this.changeHandler}
+            />
+          </label>
+        </form>
       </div>
     );
   }
