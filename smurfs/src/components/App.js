@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import { fetchSmurfs } from '../actions';
+import { getSmurfs, addSmurf } from '../actions';
 import { connect } from 'react-redux';
 /*
  to wire this component up you're going to need a few things.
@@ -17,7 +17,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchSmurfs();
+    this.props.getSmurfs();
   }
 
   changeHandler = e => {
@@ -28,12 +28,20 @@ class App extends Component {
 
   submitHandler = e => {
     e.preventDefault();
+    this.setState({
+      name: '',
+      age: '',
+      height: ''
+    });
+    this.props.addSmurf({
+      ...this.state
+    });
   };
 
   render() {
     return (
       <div className="App">
-        <form>
+        <form onSubmit={this.submitHandler}>
           <label>
             Name:{' '}
             <input
@@ -42,7 +50,7 @@ class App extends Component {
               value={this.state.name}
               onChange={this.changeHandler}
             />
-          </label>
+          </label>{' '}
           <label>
             Age:{' '}
             <input
@@ -51,7 +59,7 @@ class App extends Component {
               value={this.state.age}
               onChange={this.changeHandler}
             />
-          </label>
+          </label>{' '}
           <label>
             Height:{' '}
             <input
@@ -60,7 +68,8 @@ class App extends Component {
               value={this.state.height}
               onChange={this.changeHandler}
             />
-          </label>
+          </label>{' '}
+          <button type="submit">Add a Smurf</button>
         </form>
         <ul>
           {this.props.smurfs.map(smurf => (
@@ -86,5 +95,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { fetchSmurfs }
+  { getSmurfs, addSmurf }
 )(App);

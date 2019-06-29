@@ -21,10 +21,20 @@ const URL = 'http://localhost:3333/smurfs';
    U - updateSmurf
    D - deleteSmurf
 */
-export const fetchSmurfs = () => async dispatch => {
+export const getSmurfs = () => async dispatch => {
   dispatch({ type: FETCHING_DATA });
   try {
     const { data } = await axios.get(`${URL}`);
+    dispatch({ type: FETCHING_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({ type: FETCHING_FAILURE, payload: err });
+  }
+};
+
+export const addSmurf = smurf => async dispatch => {
+  dispatch({ type: FETCHING_DATA });
+  try {
+    const { data } = await axios.post(`${URL}`, smurf);
     dispatch({ type: FETCHING_SUCCESS, payload: data });
   } catch (err) {
     dispatch({ type: FETCHING_FAILURE, payload: err });
