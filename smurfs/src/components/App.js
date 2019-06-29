@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import { fetchSmurfs } from '../actions';
+import { connect } from 'react-redux';
 /*
  to wire this component up you're going to need a few things.
  I'll let you do this part on your own. 
@@ -11,12 +12,12 @@ import { fetchSmurfs } from '../actions';
 class App extends Component {
   state = {
     name: '',
-    age: 0,
+    age: '',
     height: ''
   };
 
   componentDidMount() {
-    this.props.fetchSmurfs;
+    this.props.fetchSmurfs();
   }
 
   changeHandler = e => {
@@ -38,7 +39,6 @@ class App extends Component {
             <input
               type="text"
               name="name"
-              placeholder="Name"
               value={this.state.name}
               onChange={this.changeHandler}
             />
@@ -48,7 +48,6 @@ class App extends Component {
             <input
               type="number"
               name="age"
-              placeholder="Age"
               value={this.state.age}
               onChange={this.changeHandler}
             />
@@ -58,15 +57,34 @@ class App extends Component {
             <input
               type="text"
               name="height"
-              placeholder="Height"
               value={this.state.height}
               onChange={this.changeHandler}
             />
           </label>
         </form>
+        <ul>
+          {this.props.smurfs.map(smurf => (
+            <li key={smurf.id}>
+              <h3>Name: {smurf.name}</h3>
+              <p>Age: {smurf.age}</p>
+              <p>Height: {smurf.height}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    smurfs: state.smurfs,
+    fetchingData: state.fetchingData
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { fetchSmurfs }
+)(App);
